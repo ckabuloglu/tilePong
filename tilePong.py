@@ -24,8 +24,8 @@ class Ball(pygame.sprite.Sprite):
 
         self.calculateDeltas()
 
-    def drawBall(self):
-        self.checkCollision()
+    def drawBall(self, barX, barLength, barY):
+        self.checkCollision(barX, barLength, barY)
         self.x += self.deltaX
         self.y += self.deltaY
         pygame.draw.circle(self.surface, self.color, (self.x, self.y), self.radius)
@@ -34,19 +34,23 @@ class Ball(pygame.sprite.Sprite):
         self.deltaX = int(self.speed * math.cos(self.direction))
         self.deltaY = int(self.speed * math.sin(self.direction))
 
-    def checkCollision(self):
-        if self.x + 8 >= self.surface.get_width() - 5 - self.speed:
+    def checkCollision(self, barX, barLength, barY):
+        if self.x + 8 >= self.surface.get_width() - 5 - self.speed / 2:
             self.direction = math.pi - self.direction
             self.calculateDeltas()
-        elif self.x - 8 <= 5 + self.speed:
+        elif self.x - 8 <= 5 + self.speed / 2:
             self.direction = math.pi - self.direction
             self.calculateDeltas()
-        elif self.y - 8 <= 5 + self.speed:
+        elif self.y - 8 <= 5 + self.speed / 2:
             self.direction = 2 * math.pi - self.direction
             self.calculateDeltas()
-        elif self.y + 8 >= self.surface.get_height() - 50 - self.speed:
-            self.direction = 2 * math.pi - self.direction
+        elif self.y + 8 >= barY and self.x >= barX and self.x <= barX + barLength:
+            degree = 210 + int(120 * (self.x - barX) / barLength)
+            self.direction = math.radians(degree)
             self.calculateDeltas()
+        elif self.y + 8 >= barY + 100:
+            pygame.quit()
+            quit()
 
 class Bar(pygame.sprite.Sprite):
 
@@ -84,8 +88,7 @@ myBar = Bar(width/2, height - 50, width / 5, 10, 8, RED, surface)
 barChange = 0
 
 # initiate the ball
-# myBall = Ball(width/2, height - 49 - myBar.width, 8, 10, -38, GREEN, surface)
-myBall = Ball(width/2, height - 150 - myBar.width, 8, 20, -5, GREEN, surface)
+myBall = Ball(width/2, height - 49 - myBar.width, 8, 10, -38, GREEN, surface)
 ballChange = 0
 
 while True:
@@ -95,7 +98,7 @@ while True:
 
     # remove previous ball and draw the ball on the next position
     pygame.draw.circle(surface, WHITE, (myBall.x, myBall.y), myBall.radius)
-    myBall.drawBall()
+    myBall.drawBall(myBar.x, myBar.length, myBar.y)
 
     for event in pygame.event.get():
         # if page is closed, quit the game
@@ -122,6 +125,6 @@ while True:
     # draw the updated the bar
     myBar.drawBar()
     pygame.display.update()
-    clock.tick(360)
+    clock.tick(720)
 
 
