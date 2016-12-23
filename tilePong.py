@@ -6,9 +6,9 @@ import random
 # define colors
 BLACK = (0,0,0)
 WHITE = (255,255,255)
-RED = (255,0,0)
-GREEN = (0,255,0)
-BLUE = (0,0,255)
+RED = (145,7,7)
+GREY = (56,56,56)
+BLUE = (135,181,255)
 
 # COLOR1 = (181,23,101)
 # COLOR2 = (74,211,114)
@@ -132,12 +132,12 @@ def putText(text, x, y, size, color, bg, surface):
 
 def gameQuit(text, surface):
     gameEnded = True
-    # pygame.draw.rect(surface, WHITE, [0, 0, surface.get_width(), surface.get_height()])
-    surface.fill((255,255,255))
-    putText(text, surface.get_width() - 100, surface.get_height() / 2 - 50, 78, COLOR1, WHITE, surface)
-    pygame.time.wait(5000)
-    # pygame.quit()
-    # quit()
+    # # pygame.draw.rect(surface, WHITE, [0, 0, surface.get_width(), surface.get_height()])
+    # surface.fill((255,255,255))
+    # putText(text, surface.get_width() - 100, surface.get_height() / 2 - 50, 78, COLOR1, WHITE, surface)
+    # pygame.time.wait(5000)
+    pygame.quit()
+    quit()
 
 
 # initiate the board
@@ -171,8 +171,8 @@ myBar = Bar(width/2, height - 50, width / 5, 10, 8, RED, surface)
 barChange = 0
 
 # initiate the ball
-ballRadius = 5
-myBall = Ball(width/2, height - 49 - myBar.width, ballRadius, 10, -38, GREEN, surface)
+ballRadius = 6
+myBall = Ball(width/2, height - 49 - myBar.width, ballRadius, 10, -38, GREY, surface)
 ballChange = 0
 
 # main game loop
